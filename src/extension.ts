@@ -11,6 +11,7 @@ import { FormulaPanel } from "./formulaPanel";
 import { HotReloadWatcher } from "./hotReloadWatcher";
 import { ITtfInterface } from "./ttfInterface";
 import { PropertySetPanel } from "./propertySetPanel";
+import { TaxonomyServiceHost } from "./taxonomyServiceHost";
 import { TokenArtifactExplorer } from "./tokenArtifactExplorer";
 import { TokenBasePanel } from "./tokenBasePanel";
 import { TokenDefinitionExplorer } from "./tokenDefinitionExplorer";
@@ -38,6 +39,14 @@ export async function activate(context: vscode.ExtensionContext) {
         "ttf_taxonomy.bin"
       )
     );
+
+  const taxonomyServiceHost = await TaxonomyServiceHost.create(context);
+  if (taxonomyServiceHost) {
+    context.subscriptions.push(taxonomyServiceHost);
+  } else {
+    // show error
+    // setup fall back
+  }
 
   let currentEnvironment = "Sandbox";
   let ttfConnection: ITtfInterface = await newSandboxConnection();
