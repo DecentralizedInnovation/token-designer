@@ -30,23 +30,28 @@ export async function activate(context: vscode.ExtensionContext) {
     panelReloadEvent = hotReloadWatcher.reload;
   }
 
-  const newSandboxConnection = async () =>
-    await TtfFileSystemConnection.create(
-      path.join(
-        context.extensionPath,
-        "resources",
-        "ttf_snapshot",
-        "ttf_taxonomy.bin"
-      )
-    );
-
   const taxonomyServiceHost = await TaxonomyServiceHost.create(context);
   if (taxonomyServiceHost) {
     context.subscriptions.push(taxonomyServiceHost);
-  } else {
-    // show error
-    // setup fall back
   }
+
+  const newSandboxConnection = async () => {
+    if (taxonomyServiceHost) {
+      return new ttfClient.ServiceClient(
+        "localhost:8086",
+        grpc.credentials.createInsecure()
+      );
+    } else {
+      return await TtfFileSystemConnection.create(
+        path.join(
+          context.extensionPath,
+          "resources",
+          "ttf_snapshot",
+          "ttf_taxonomy.bin"
+        )
+      );
+    }
+  };
 
   let currentEnvironment = "Sandbox";
   let ttfConnection: ITtfInterface = await newSandboxConnection();
