@@ -5,6 +5,7 @@ on:
     branches: 
     - master
     - release/v*
+    - printer
   pull_request:
     branches:
     - master
