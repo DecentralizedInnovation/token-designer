@@ -35,7 +35,10 @@ export class TaxonomyServiceHost {
     while (true) {
       try {
         attempts++;
-        console.log("Waiting for healthy local taxonomy service host...", attempts);
+        console.log(
+          "Waiting for healthy local taxonomy service host...",
+          attempts
+        );
         if (attempts > 15) {
           return undefined;
         }
@@ -92,7 +95,6 @@ export class TaxonomyServiceHost {
       shellArgs: dotNetArguments,
       hideFromUser: false,
     });
-    this.terminal.show();
   }
 
   private async renewSandbox() {
