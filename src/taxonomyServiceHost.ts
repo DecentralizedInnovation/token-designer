@@ -13,6 +13,8 @@ export class TaxonomyServiceHost {
   private readonly artifactsSandbox: string;
   private readonly artifactsZip: string;
 
+  private healthy = false;
+  private everHealthy = false;
   private terminal: vscode.Terminal | null = null;
 
   static async create(
@@ -27,27 +29,19 @@ export class TaxonomyServiceHost {
 
     const host = new TaxonomyServiceHost(context);
     await host.renewSandbox();
-    host.ensureTerminal();
+    await host.watchdog();
 
     let attempts = 0;
     while (true) {
       try {
         attempts++;
-        console.log("Looking for local taxonomy service...", attempts);
+        console.log("Waiting for healthy local taxonomy service host...", attempts);
         if (attempts > 15) {
           return undefined;
         }
-        const connection = new ttfClient.ServiceClient(
-          "localhost:8086",
-          grpc.credentials.createInsecure()
-        );
-        await new Promise((resolve, reject) =>
-          connection.getConfig(
-            new ttfArtifacts.ConfigurationRequest(),
-            (err, response) => (err ? reject() : resolve())
-          )
-        );
-        return host;
+        if (host.healthy) {
+          return host;
+        }
       } catch {
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -111,6 +105,30 @@ export class TaxonomyServiceHost {
     }
     fs.mkdirSync(this.artifactsSandbox);
     await extractZip(this.artifactsZip, { dir: this.artifactsSandbox });
+  }
+
+  private async watchdog() {
+    try {
+      const connection = new ttfClient.ServiceClient(
+        "localhost:8086",
+        grpc.credentials.createInsecure()
+      );
+      await new Promise((resolve, reject) =>
+        connection.getConfig(new ttfArtifacts.ConfigurationRequest(), (err) =>
+          err ? reject() : resolve()
+        )
+      );
+      this.healthy = true;
+      this.everHealthy = true;
+    } catch {
+      this.healthy = false;
+      console.log(
+        "No working connection to a local TTF server; connecting now..."
+      );
+      this.ensureTerminal();
+    } finally {
+      setTimeout(() => this.watchdog(), this.everHealthy ? 15000 : 1000);
+    }
   }
 
   dispose() {}
