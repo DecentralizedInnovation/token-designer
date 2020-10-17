@@ -131,5 +131,7 @@ export class TaxonomyServiceHost {
     }
   }
 
-  dispose() {}
+  dispose() {
+    this.terminal?.dispose();
+  }
 }
