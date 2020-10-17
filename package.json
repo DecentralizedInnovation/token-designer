@@ -237,9 +237,8 @@
   "scripts": {
     "postinstall": "npm run getdeps",
     "getdeps": "mkdir -p deps && npm run getdeps-artifacts && npm run getdeps-TaxonomyService && npm run getdeps-TTF-Printer",
-    "getdeps-artifacts": "npm run getdeps-artifacts-download && npm run getdeps-artifacts-extract",
-    "getdeps-artifacts-download": "mkdir -p deps/artifacts-master && node_modules/.bin/nwget https://github.com/InterWorkAlliance/TokenTaxonomyFramework/releases/download/v1.0/artifacts.zip -O deps/artifacts-master/artifacts.zip",
-    "getdeps-artifacts-extract": "cd deps/artifacts-master && ../../node_modules/.bin/extract-zip artifacts.zip && rm artifacts.zip",
+    "getdeps-artifacts": "npm run getdeps-artifacts-download",
+    "getdeps-artifacts-download": "node_modules/.bin/nwget https://github.com/InterWorkAlliance/TokenTaxonomyFramework/releases/download/v1.0/artifacts.zip -O deps/artifacts.zip",
     "getdeps-TaxonomyService": "npm run getdeps-TaxonomyService-download && npm run getdeps-TaxonomyService-extract",
     "getdeps-TaxonomyService-download": "mkdir -p deps/TaxonomyService && node_modules/.bin/nwget https://github.com/InterWorkAlliance/TokenTaxonomyFramework/releases/download/v1.0/TaxonomyService.zip -O deps/TaxonomyService/TaxonomyService.zip",
     "getdeps-TaxonomyService-extract": "cd deps/TaxonomyService && ../../node_modules/.bin/extract-zip TaxonomyService.zip && rm TaxonomyService.zip",
@@ -254,18 +253,17 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
-    "@types/fs-extra": "^9.0.2",
     "@types/glob": "^7.1.1",
     "@types/google-protobuf": "^3.7.2",
     "@types/gulp": "^4.0.6",
     "@types/node": "^10.12.21",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "@types/rimraf": "^3.0.0",
     "@types/uuid": "^7.0.3",
     "@types/vscode": "^1.49",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
-    "extract-zip": "^2.0.1",
     "glob": "^7.1.4",
     "grpc-tools": "^1.8.1",
     "grpc_tools_node_protoc_ts": "^2.5.11",
@@ -281,11 +279,12 @@
     "wget-improved": "^3.2.1"
   },
   "dependencies": {
-    "fs-extra": "^9.0.1",
+    "extract-zip": "^2.0.1",
     "google-protobuf": "^3.11.4",
     "grpc": "^1.24.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "rimraf": "^3.0.2",
     "uuid": "^8.0.0"
   }
 }

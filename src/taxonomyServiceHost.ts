@@ -1,15 +1,17 @@
 import * as childProcess from "child_process";
-import * as fs from "fs-extra";
+import * as extractZip from "extract-zip";
+import * as fs from "fs";
 import * as grpc from "grpc";
 import * as path from "path";
+import * as rimraf from "rimraf";
 import * as ttfArtifacts from "./ttf/artifact_pb";
 import * as ttfClient from "./ttf/service_grpc_pb";
 import * as vscode from "vscode";
 
 export class TaxonomyServiceHost {
   private readonly binaryPath: string;
-  private readonly sandboxPath: string;
-  private readonly artifactsMasterPath: string;
+  private readonly artifactsSandbox: string;
+  private readonly artifactsZip: string;
 
   private terminal: vscode.Terminal | null = null;
 
@@ -24,6 +26,8 @@ export class TaxonomyServiceHost {
     }
 
     const host = new TaxonomyServiceHost(context);
+    await host.renewSandbox();
+    host.ensureTerminal();
 
     let attempts = 0;
     while (true) {
@@ -52,15 +56,15 @@ export class TaxonomyServiceHost {
   }
 
   private constructor(private readonly context: vscode.ExtensionContext) {
-    this.sandboxPath = path.join(
+    this.artifactsSandbox = path.join(
       this.context.extensionPath,
       "deps",
       "artifacts"
     );
-    this.artifactsMasterPath = path.join(
+    this.artifactsZip = path.join(
       this.context.extensionPath,
       "deps",
-      "artifacts-master"
+      "artifacts.zip"
     );
     this.binaryPath = path.join(
       this.context.extensionPath,
@@ -68,8 +72,6 @@ export class TaxonomyServiceHost {
       "TaxonomyService",
       "TaxonomyService.dll"
     );
-    this.renewSandbox();
-    this.ensureTerminal();
   }
 
   private static checkForDotNet() {
@@ -99,9 +101,16 @@ export class TaxonomyServiceHost {
     this.terminal.show();
   }
 
-  private renewSandbox() {
-    fs.emptyDirSync(this.sandboxPath);
-    fs.copySync(this.artifactsMasterPath, this.sandboxPath);
+  private async renewSandbox() {
+    if (fs.existsSync(this.artifactsSandbox)) {
+      await new Promise((resolve, reject) =>
+        rimraf(this.artifactsSandbox, (error) =>
+          error ? reject(error) : resolve()
+        )
+      );
+    }
+    fs.mkdirSync(this.artifactsSandbox);
+    await extractZip(this.artifactsZip, { dir: this.artifactsSandbox });
   }
 
   dispose() {}
