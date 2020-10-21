@@ -1,11 +1,11 @@
 import * as ttfArtifact from "./ttf/artifact_pb";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as ttfCore from "./ttf/core_pb";
 import * as vscode from "vscode";
 import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 
 import { definitionPanelEvents } from "./panels/definitionPanelEvents";
 import { FormulaPanel } from "./formulaPanel";
-import { ITtfInterface } from "./ttfInterface";
 import { PanelBase } from "./panelBase";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TokenTaxonomy } from "./tokenTaxonomy";
@@ -17,7 +17,7 @@ export class DefinitionPanel extends PanelBase {
 
   static async openNewDefinition(
     formulaId: any,
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -45,7 +45,7 @@ export class DefinitionPanel extends PanelBase {
 
   static async openExistingDefinition(
     artifactId: string,
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -65,7 +65,7 @@ export class DefinitionPanel extends PanelBase {
   }
 
   private constructor(
-    private readonly ttfConnection: ITtfInterface,
+    private readonly ttfConnection: ttfClient.ServiceClient,
     private readonly environment: string,
     private readonly ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,

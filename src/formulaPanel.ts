@@ -1,11 +1,11 @@
 import * as ttfArtifact from "./ttf/artifact_pb";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as ttfCore from "./ttf/core_pb";
 import * as uuid from "uuid";
 import * as vscode from "vscode";
 import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 
 import { formulaPanelEvents } from "./panels/formulaPanelEvents";
-import { ITtfInterface } from "./ttfInterface";
 import { PanelBase } from "./panelBase";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TokenTaxonomy } from "./tokenTaxonomy";
@@ -18,7 +18,7 @@ export class FormulaPanel extends PanelBase {
   private incompatabilities: any = {};
 
   static async openNewFormula(
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -39,7 +39,7 @@ export class FormulaPanel extends PanelBase {
 
   static async openExistingFormula(
     toolingSymbol: string,
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -59,7 +59,7 @@ export class FormulaPanel extends PanelBase {
   }
 
   private constructor(
-    private readonly ttfConnection: ITtfInterface,
+    private readonly ttfConnection: ttfClient.ServiceClient,
     private readonly environment: string,
     private readonly ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,

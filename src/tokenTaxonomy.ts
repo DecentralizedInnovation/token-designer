@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as ttfTaxonomy from "./ttf/taxonomy_pb";
 
-import { ITtfInterface } from "./ttfInterface";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 
 export class TokenTaxonomy {
@@ -17,7 +17,7 @@ export class TokenTaxonomy {
     return this.latestTaxonomy;
   }
 
-  constructor(private readonly ttfConnection: ITtfInterface) {
+  constructor(private readonly ttfConnection: ttfClient.ServiceClient) {
     this.refresh();
   }
 

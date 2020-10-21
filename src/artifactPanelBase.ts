@@ -1,11 +1,11 @@
 import * as ttfArtifact from "./ttf/artifact_pb";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as uuid from "uuid";
 import * as vscode from "vscode";
 import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 
 import { artifactPanelBaseEvents } from "./panels/artifactPanelBaseEvents";
 import ArtifactUpdate from "./panels/artifactUpdate";
-import { ITtfInterface } from "./ttfInterface";
 import { PanelBase } from "./panelBase";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TokenTaxonomy } from "./tokenTaxonomy";
@@ -21,7 +21,7 @@ export abstract class ArtifactPanelBase<
   T extends ArtifactType
 > extends PanelBase {
   static async createNew<T extends ArtifactType>(
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     ttfTaxonomy: TokenTaxonomy,
     panel: ArtifactPanelBase<T>,
     newObject: T,
@@ -69,7 +69,7 @@ export abstract class ArtifactPanelBase<
   protected artifact: T | null = null;
 
   protected constructor(
-    protected readonly ttfConnection: ITtfInterface,
+    protected readonly ttfConnection: ttfClient.ServiceClient,
     private readonly ttfClassName: string,
     private readonly environment: string,
     protected readonly ttfTaxonomy: TokenTaxonomy,

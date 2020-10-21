@@ -1,15 +1,15 @@
 import * as ttfArtifact from "./ttf/artifact_pb";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as ttfCore from "./ttf/core_pb";
 import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
 import { behaviorPanelEvents } from "./panels/behaviorPanelEvents";
-import { ITtfInterface } from "./ttfInterface";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
   static async createNewBehavior(
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -36,7 +36,7 @@ export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
 
   static async openExistingBehavior(
     artifactId: string,
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -100,7 +100,7 @@ export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
   }
 
   private constructor(
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,

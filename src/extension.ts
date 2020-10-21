@@ -1,5 +1,4 @@
 import * as grpc from "grpc";
-import * as path from "path";
 import * as ttfArtifact from "./ttf/artifact_pb";
 import * as ttfClient from "./ttf/service_grpc_pb";
 import * as vscode from "vscode";
@@ -9,7 +8,6 @@ import { BehaviorGroupPanel } from "./behaviorGroupPanel";
 import { DefinitionPanel } from "./definitionPanel";
 import { FormulaPanel } from "./formulaPanel";
 import { HotReloadWatcher } from "./hotReloadWatcher";
-import { ITtfInterface } from "./ttfInterface";
 import { PropertySetPanel } from "./propertySetPanel";
 import { TaxonomyServiceHost } from "./taxonomyServiceHost";
 import { TokenArtifactExplorer } from "./tokenArtifactExplorer";
@@ -17,7 +15,6 @@ import { TokenBasePanel } from "./tokenBasePanel";
 import { TokenDefinitionExplorer } from "./tokenDefinitionExplorer";
 import { TokenFormulaExplorer } from "./tokenFormulaExplorer";
 import { TokenTaxonomy } from "./tokenTaxonomy";
-import { TtfFileSystemConnection } from "./ttfFileSystemConnection";
 
 const StatusBarPrefix = "$(debug-disconnect) TTF: ";
 
@@ -33,28 +30,22 @@ export async function activate(context: vscode.ExtensionContext) {
   const taxonomyServiceHost = await TaxonomyServiceHost.create(context);
   if (taxonomyServiceHost) {
     context.subscriptions.push(taxonomyServiceHost);
+  } else {
+    await vscode.window.showErrorMessage(
+      "The Token Designer cannot currently be used as a sandbox environment could not be initialized."
+    );
+    return;
   }
 
   const newSandboxConnection = async () => {
-    if (taxonomyServiceHost) {
-      return new ttfClient.ServiceClient(
-        "localhost:8086",
-        grpc.credentials.createInsecure()
-      );
-    } else {
-      return await TtfFileSystemConnection.create(
-        path.join(
-          context.extensionPath,
-          "resources",
-          "ttf_snapshot",
-          "ttf_taxonomy.bin"
-        )
-      );
-    }
+    return new ttfClient.ServiceClient(
+      "localhost:8086",
+      grpc.credentials.createInsecure()
+    );
   };
 
   let currentEnvironment = "Sandbox";
-  let ttfConnection: ITtfInterface = await newSandboxConnection();
+  let ttfConnection = await newSandboxConnection();
   let ttfTaxonomy = new TokenTaxonomy(ttfConnection);
 
   const tokenArtifactExplorer = new TokenArtifactExplorer(

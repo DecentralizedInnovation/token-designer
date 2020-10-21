@@ -1,16 +1,16 @@
 import * as ttfArtifact from "./ttf/artifact_pb";
+import * as ttfClient from "./ttf/service_grpc_pb";
 import * as ttfCore from "./ttf/core_pb";
 import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
-import { ITtfInterface } from "./ttfInterface";
 import { tokenBasePanelEvents } from "./panels/tokenBasePanelEvents";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
   static async openExistingTokenBase(
     artifactId: string,
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -30,7 +30,7 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
   }
 
   private constructor(
-    ttfConnection: ITtfInterface,
+    ttfConnection: ttfClient.ServiceClient,
     environment: string,
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
@@ -52,8 +52,7 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
     );
   }
 
-  protected async onUnhandledMessage(message: any) {
-  }
+  protected async onUnhandledMessage(message: any) {}
 
   protected async getArtifact(
     symbol: ttfArtifact.ArtifactSymbol
