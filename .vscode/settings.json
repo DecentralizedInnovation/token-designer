@@ -6,6 +6,10 @@
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
     },
+    
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off"
+    "typescript.tsc.autoDetect": "off",
+    
+    // See: https://stackoverflow.com/questions/55201424/how-to-get-vscode-to-show-typescript-errors-for-files-not-open-in-the-editor/60116499
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }
