@@ -5,6 +5,7 @@ import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
 import { behaviorPanelEvents } from "./panels/behaviorPanelEvents";
+import { TaxonomyServiceHost } from "./taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
@@ -14,7 +15,8 @@ export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     const panel = new BehaviorPanel(
       ttfConnection,
@@ -30,7 +32,8 @@ export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {
       panel,
       new ttfCore.Behavior(),
       "taxonomy.model.core.Behavior",
-      ttfArtifact.ArtifactType.BEHAVIOR
+      ttfArtifact.ArtifactType.BEHAVIOR,
+      taxonomyServiceHost
     );
   }
 

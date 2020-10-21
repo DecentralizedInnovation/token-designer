@@ -52,6 +52,17 @@ export class TaxonomyServiceHost {
     }
   }
 
+  async restart() {
+    this.terminal?.dispose();
+    this.terminal = null;
+    this.healthy = false;
+    this.ensureTerminal();
+    while (!this.healthy) {
+      console.log("Waiting for sandbox host to restart...");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
+
   private constructor(private readonly context: vscode.ExtensionContext) {
     this.artifactsSandbox = path.join(
       this.context.extensionPath,

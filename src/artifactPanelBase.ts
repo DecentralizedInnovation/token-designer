@@ -8,6 +8,7 @@ import { artifactPanelBaseEvents } from "./panels/artifactPanelBaseEvents";
 import ArtifactUpdate from "./panels/artifactUpdate";
 import { PanelBase } from "./panelBase";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
+import { TaxonomyServiceHost } from "./taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 type ArtifactType = {
@@ -26,7 +27,8 @@ export abstract class ArtifactPanelBase<
     panel: ArtifactPanelBase<T>,
     newObject: T,
     ttfTypeString: string,
-    artifactType: ttfArtifact.ArtifactType
+    artifactType: ttfArtifact.ArtifactType,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     const newArtifactSymbol = new ttfArtifact.ArtifactSymbol();
     newArtifactSymbol.setId(uuid.v1());
@@ -47,6 +49,11 @@ export abstract class ArtifactPanelBase<
         err ? reject(err) : resolve()
       )
     );
+
+    // TODO: Fix bugs in the TaxonomyService that sometimes require it to be restarted to
+    //       re-read its artifacts from disk, then remove this hack.
+    await taxonomyServiceHost.restart();
+
     await ttfTaxonomy.refresh();
     await panel.openArtifact(newArtifactSymbol.getId());
     return panel;
