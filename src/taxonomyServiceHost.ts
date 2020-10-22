@@ -56,11 +56,13 @@ export class TaxonomyServiceHost {
     this.terminal?.dispose();
     this.terminal = null;
     this.healthy = false;
+    this.everHealthy = false; // Speed up detection of healthy service
     this.ensureTerminal();
+    console.log("Waiting for sandbox host to restart...");
     while (!this.healthy) {
-      console.log("Waiting for sandbox host to restart...");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 250));
     }
+    console.log("Sandbox host restart complete");
   }
 
   private constructor(private readonly context: vscode.ExtensionContext) {
@@ -141,7 +143,7 @@ export class TaxonomyServiceHost {
       );
       this.ensureTerminal();
     } finally {
-      setTimeout(() => this.watchdog(), this.everHealthy ? 15000 : 1000);
+      setTimeout(() => this.watchdog(), this.everHealthy ? 15000 : 250);
     }
   }
 
