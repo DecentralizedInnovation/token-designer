@@ -86,7 +86,8 @@ export abstract class ArtifactPanelBase<
     clientScript: string,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    private readonly taxonomyServiceHost: TaxonomyServiceHost
   ) {
     super(panelId, clientScript, extensionPath, disposables, panelReloadEvent);
     this.setTitle(this.title, iconSvg);
@@ -140,6 +141,11 @@ export abstract class ArtifactPanelBase<
         (error, response) => (error && reject(error)) || resolve(response)
       )
     );
+
+    // TODO: Fix bugs in the TaxonomyService that sometimes require it to be restarted to
+    //       re-read its artifacts from disk, then remove this hack.
+    await this.taxonomyServiceHost.restart();
+
     await this.refreshArtifact(symbol.getId());
   }
 

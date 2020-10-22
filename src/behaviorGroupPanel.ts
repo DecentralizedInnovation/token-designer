@@ -26,7 +26,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
     return await ArtifactPanelBase.createNew(
       ttfConnection,
@@ -46,7 +47,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     const panel = new BehaviorGroupPanel(
       ttfConnection,
@@ -54,7 +56,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
     await panel.openArtifact(artifactId);
     return panel;
@@ -66,7 +69,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     super(
       ttfConnection,
@@ -79,7 +83,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       "behaviorGroupPanel.main.js",
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
   }
 

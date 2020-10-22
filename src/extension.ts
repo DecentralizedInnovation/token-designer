@@ -265,7 +265,8 @@ export async function activate(context: vscode.ExtensionContext) {
         ttfTaxonomy,
         context.extensionPath,
         context.subscriptions,
-        panelReloadEvent
+        panelReloadEvent,
+        taxonomyServiceHost
       );
     }
   );
@@ -280,7 +281,8 @@ export async function activate(context: vscode.ExtensionContext) {
         ttfTaxonomy,
         context.extensionPath,
         context.subscriptions,
-        panelReloadEvent
+        panelReloadEvent,
+        taxonomyServiceHost
       );
     }
   );
@@ -295,7 +297,8 @@ export async function activate(context: vscode.ExtensionContext) {
         ttfTaxonomy,
         context.extensionPath,
         context.subscriptions,
-        panelReloadEvent
+        panelReloadEvent,
+        taxonomyServiceHost
       );
     }
   );
@@ -310,7 +313,8 @@ export async function activate(context: vscode.ExtensionContext) {
         ttfTaxonomy,
         context.extensionPath,
         context.subscriptions,
-        panelReloadEvent
+        panelReloadEvent,
+        taxonomyServiceHost
       );
     }
   );

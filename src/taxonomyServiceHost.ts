@@ -109,6 +109,7 @@ export class TaxonomyServiceHost {
   }
 
   private async renewSandbox() {
+    console.log("Recreating TTF sandbox");
     if (fs.existsSync(this.artifactsSandbox)) {
       await new Promise((resolve, reject) =>
         rimraf(this.artifactsSandbox, (error) =>

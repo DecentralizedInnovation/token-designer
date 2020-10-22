@@ -4,7 +4,7 @@ import * as ttfCore from "./ttf/core_pb";
 import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
-import { tokenBasePanelEvents } from "./panels/tokenBasePanelEvents";
+import { TaxonomyServiceHost } from "./taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
@@ -15,7 +15,8 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     const panel = new TokenBasePanel(
       ttfConnection,
@@ -23,7 +24,8 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
     await panel.openArtifact(artifactId);
     return panel;
@@ -35,7 +37,8 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     super(
       ttfConnection,
@@ -48,7 +51,8 @@ export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {
       "tokenBasePanel.main.js",
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
   }
 

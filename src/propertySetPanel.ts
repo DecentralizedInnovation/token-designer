@@ -25,7 +25,8 @@ export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
     const newObject = new ttfCore.PropertySet();
     newObject.setRepresentationType(ttfArtifact.RepresentationType.COMMON);
@@ -47,7 +48,8 @@ export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     const panel = new PropertySetPanel(
       ttfConnection,
@@ -55,7 +57,8 @@ export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
     await panel.openArtifact(artifactId);
     return panel;
@@ -67,7 +70,8 @@ export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    taxonomyServiceHost: TaxonomyServiceHost
   ) {
     super(
       ttfConnection,
@@ -80,7 +84,8 @@ export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {
       "propertySetPanel.main.js",
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      taxonomyServiceHost
     );
   }
 
