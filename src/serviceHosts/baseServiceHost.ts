@@ -1,11 +1,4 @@
 import * as childProcess from "child_process";
-import * as extractZip from "extract-zip";
-import * as fs from "fs";
-import * as grpc from "grpc";
-import * as path from "path";
-import * as rimraf from "rimraf";
-import * as ttfArtifacts from "../ttf/artifact_pb";
-import * as ttfClient from "../ttf/service_grpc_pb";
 import * as vscode from "vscode";
 
 export abstract class BaseServiceHost {
@@ -28,7 +21,7 @@ export abstract class BaseServiceHost {
       try {
         attempts++;
         console.log(
-          "Waiting for healthy local taxonomy service host...",
+          `Waiting for healthy ${host.terminalName} service host...`,
           attempts
         );
         if (attempts > 15) {
@@ -44,7 +37,11 @@ export abstract class BaseServiceHost {
     }
   }
 
-  protected constructor(private readonly binaryPath: string) {}
+  protected constructor(
+    private readonly binaryPath: string,
+    private readonly terminalName: string,
+    private readonly isHealthy: () => Promise<boolean>
+  ) {}
 
   async restart() {
     this.terminal?.dispose();
@@ -52,11 +49,11 @@ export abstract class BaseServiceHost {
     this.healthy = false;
     this.everHealthy = false; // Speed up detection of healthy service
     this.ensureTerminal();
-    console.log("Waiting for sandbox host to restart...");
+    console.log(this.terminalName, "Waiting for restart...");
     while (!this.healthy) {
       await new Promise((resolve) => setTimeout(resolve, 250));
     }
-    console.log("Sandbox host restart complete");
+    console.log(this.terminalName, "restart complete");
   }
 
   private static checkForDotNet() {
@@ -78,7 +75,7 @@ export abstract class BaseServiceHost {
     }
     const dotNetArguments = [this.binaryPath];
     this.terminal = vscode.window.createTerminal({
-      name: "TokenTaxonomyService",
+      name: this.terminalName,
       shellPath: "dotnet",
       shellArgs: dotNetArguments,
       hideFromUser: false,
@@ -87,21 +84,17 @@ export abstract class BaseServiceHost {
 
   private async watchdog() {
     try {
-      const connection = new ttfClient.ServiceClient(
-        "localhost:8086",
-        grpc.credentials.createInsecure()
-      );
-      await new Promise((resolve, reject) =>
-        connection.getConfig(new ttfArtifacts.ConfigurationRequest(), (err) =>
-          err ? reject() : resolve()
-        )
-      );
-      this.healthy = true;
-      this.everHealthy = true;
+      if (await this.isHealthy()) {
+        this.healthy = true;
+        this.everHealthy = true;
+      } else {
+        throw Error();
+      }
     } catch {
       this.healthy = false;
       console.log(
-        "No working connection to a local TTF server; connecting now..."
+        this.terminalName,
+        "No working connection to a local server; connecting now..."
       );
       this.ensureTerminal();
     } finally {

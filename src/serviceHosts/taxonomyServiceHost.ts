@@ -1,4 +1,3 @@
-import * as childProcess from "child_process";
 import * as extractZip from "extract-zip";
 import * as fs from "fs";
 import * as grpc from "grpc";
@@ -29,7 +28,25 @@ export class TaxonomyServiceHost extends BaseServiceHost {
         "deps",
         "TaxonomyService",
         "TaxonomyService.dll"
-      )
+      ),
+      "TokenTaxonomyService",
+      async () => {
+        try {
+          const connection = new ttfClient.ServiceClient(
+            "localhost:8086",
+            grpc.credentials.createInsecure()
+          );
+          await new Promise((resolve, reject) =>
+            connection.getConfig(
+              new ttfArtifacts.ConfigurationRequest(),
+              (err) => (err ? reject() : resolve())
+            )
+          );
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
     );
     this.artifactsSandbox = path.join(
       this.context.extensionPath,
