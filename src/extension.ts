@@ -8,6 +8,7 @@ import { BehaviorGroupPanel } from "./behaviorGroupPanel";
 import { DefinitionPanel } from "./definitionPanel";
 import { FormulaPanel } from "./formulaPanel";
 import { HotReloadWatcher } from "./hotReloadWatcher";
+import { PrinterServiceHost } from "./serviceHosts/printerServiceHost";
 import { PropertySetPanel } from "./propertySetPanel";
 import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenArtifactExplorer } from "./tokenArtifactExplorer";
@@ -27,10 +28,20 @@ export async function activate(context: vscode.ExtensionContext) {
     panelReloadEvent = hotReloadWatcher.reload;
   }
 
-  const taxonomyServiceHost = await TaxonomyServiceHost.create(context);
+  const [taxonomyServiceHost, printerServiceHost] = await Promise.all([
+    TaxonomyServiceHost.create(context),
+    PrinterServiceHost.create(context),
+  ]);
+
   if (taxonomyServiceHost) {
     context.subscriptions.push(taxonomyServiceHost);
-  } else {
+  }
+
+  if (printerServiceHost) {
+    context.subscriptions.push(printerServiceHost);
+  }
+
+  if (!taxonomyServiceHost || !printerServiceHost) {
     await vscode.window.showErrorMessage(
       "The Token Designer cannot currently be used as a sandbox environment could not be initialized."
     );
