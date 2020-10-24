@@ -6,7 +6,7 @@ import * as vscode from "vscode";
 import { ArtifactPanelBase } from "./artifactPanelBase";
 import { BehaviorPanel } from "./behaviorPanel";
 import { propertySetPanelEvents } from "./panels/propertySetPanelEvents";
-import { TaxonomyServiceHost } from "./taxonomyServiceHost";
+import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class PropertySetPanel extends ArtifactPanelBase<ttfCore.PropertySet> {

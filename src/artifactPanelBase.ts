@@ -8,7 +8,7 @@ import { artifactPanelBaseEvents } from "./panels/artifactPanelBaseEvents";
 import ArtifactUpdate from "./panels/artifactUpdate";
 import { PanelBase } from "./panelBase";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
-import { TaxonomyServiceHost } from "./taxonomyServiceHost";
+import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 type ArtifactType = {

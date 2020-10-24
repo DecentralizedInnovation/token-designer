@@ -4,7 +4,7 @@ import * as ttfCore from "./ttf/core_pb";
 import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
-import { TaxonomyServiceHost } from "./taxonomyServiceHost";
+import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class TokenBasePanel extends ArtifactPanelBase<ttfCore.Base> {

@@ -9,7 +9,7 @@ import { DefinitionPanel } from "./definitionPanel";
 import { FormulaPanel } from "./formulaPanel";
 import { HotReloadWatcher } from "./hotReloadWatcher";
 import { PropertySetPanel } from "./propertySetPanel";
-import { TaxonomyServiceHost } from "./taxonomyServiceHost";
+import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenArtifactExplorer } from "./tokenArtifactExplorer";
 import { TokenBasePanel } from "./tokenBasePanel";
 import { TokenDefinitionExplorer } from "./tokenDefinitionExplorer";

@@ -5,7 +5,7 @@ import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
 import { behaviorPanelEvents } from "./panels/behaviorPanelEvents";
-import { TaxonomyServiceHost } from "./taxonomyServiceHost";
+import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
 export class BehaviorPanel extends ArtifactPanelBase<ttfCore.Behavior> {

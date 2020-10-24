@@ -4,8 +4,8 @@ import * as fs from "fs";
 import * as grpc from "grpc";
 import * as path from "path";
 import * as rimraf from "rimraf";
-import * as ttfArtifacts from "./ttf/artifact_pb";
-import * as ttfClient from "./ttf/service_grpc_pb";
+import * as ttfArtifacts from "../ttf/artifact_pb";
+import * as ttfClient from "../ttf/service_grpc_pb";
 import * as vscode from "vscode";
 
 export class TaxonomyServiceHost {
