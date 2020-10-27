@@ -43,24 +43,38 @@ export class PrinterServiceHost extends BaseServiceHost {
       ),
       "TTF-Printer",
       async () => {
-        try {
-          const connection = new ttfPrinterClient.PrinterServiceClient(
-            "localhost:8088",
-            grpc.credentials.createInsecure()
-          );
-          const artifact = new ttfPrinting.ArtifactToPrint();
-          artifact.setId("89ca6daf-5585-469e-abd1-19bc44e7a012");
-          artifact.setType(ttfArtifacts.ArtifactType.BASE);
-          await new Promise((resolve, reject) =>
-            connection.printTTFArtifact(artifact, (err) =>
-              err ? reject() : resolve()
-            )
-          );
-          return true;
-        } catch (e) {
-          return false;
-        }
+        return (
+          (await this.print(
+            "89ca6daf-5585-469e-abd1-19bc44e7a012",
+            ttfArtifacts.ArtifactType.BASE
+          )) !== null
+        );
       }
     );
+  }
+
+  async print(
+    artifactId: string,
+    artifactType: ttfArtifacts.ArtifactType
+  ): Promise<string | null> {
+    try {
+      const connection = new ttfPrinterClient.PrinterServiceClient(
+        "localhost:8088",
+        grpc.credentials.createInsecure()
+      );
+      const artifact = new ttfPrinting.ArtifactToPrint();
+      artifact.setId(artifactId);
+      artifact.setType(artifactType);
+      const response: ttfPrinting.PrintResult = await new Promise(
+        (resolve, reject) =>
+          connection.printTTFArtifact(artifact, (err, response) =>
+            err ? reject() : resolve(response)
+          )
+      );
+      return response.getOpenXmlDocument();
+    } catch (e) {
+      console.error("Could not print", artifactId, artifactType, e.message);
+      return null;
+    }
   }
 }

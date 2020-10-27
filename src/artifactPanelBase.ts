@@ -155,8 +155,11 @@ export abstract class ArtifactPanelBase<
 
   private async export() {
     const id = this.artifact?.getArtifact()?.getArtifactSymbol()?.getId();
-    if (id) {
-      // TODO
+    const type = this.artifact?.getArtifact()?.getArtifactSymbol()?.getType();
+    if (id && type !== undefined) {
+      const openXmlDocument = await this.printerServiceHost.print(id, type);
+      console.log(openXmlDocument?.length);
+      // TODO: Save data to Word file in current workspace
     }
   }
 
