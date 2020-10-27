@@ -178,7 +178,17 @@ export abstract class ArtifactPanelBase<
       const openXmlDocument = await this.printerServiceHost.print(id, type);
       if (openXmlDocument) {
         fs.writeFileSync(savePath, Buffer.from(openXmlDocument, "base64"));
-        vscode.window.showInformationMessage(`Exported to ${savePath}`);
+        if (
+          (await vscode.window.showInformationMessage(
+            `Exported to ${savePath}`,
+            "Open",
+            "Dismiss"
+          )) === "Open"
+        ) {
+          if (!(await vscode.env.openExternal(vscode.Uri.file(savePath)))) {
+            vscode.window.showErrorMessage("The file could not be opened");
+          }
+        }
       }
     }
   }
