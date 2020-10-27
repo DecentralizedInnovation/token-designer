@@ -156,40 +156,9 @@ export abstract class ArtifactPanelBase<
   }
 
   private async export() {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (!workspaceFolders || !workspaceFolders.length) {
-      vscode.window.showErrorMessage(
-        "A folder must be open in the current VS Code workspace to export"
-      );
-      return;
-    }
-    const firstWorkspaceFolderPath = workspaceFolders[0].uri.fsPath;
-    let i = 0;
-    const name = this.artifact?.getArtifact()?.getName() || "Artifact";
-    let savePath = path.join(firstWorkspaceFolderPath, `${name}.docx`);
-    while (fs.existsSync(savePath)) {
-      i++;
-      savePath = path.join(firstWorkspaceFolderPath, `${name} (${i}).docx`);
-    }
-
-    const id = this.artifact?.getArtifact()?.getArtifactSymbol()?.getId();
-    const type = this.artifact?.getArtifact()?.getArtifactSymbol()?.getType();
-    if (id && type !== undefined) {
-      const openXmlDocument = await this.printerServiceHost.print(id, type);
-      if (openXmlDocument) {
-        fs.writeFileSync(savePath, Buffer.from(openXmlDocument, "base64"));
-        if (
-          (await vscode.window.showInformationMessage(
-            `Exported to ${savePath}`,
-            "Open",
-            "Dismiss"
-          )) === "Open"
-        ) {
-          if (!(await vscode.env.openExternal(vscode.Uri.file(savePath)))) {
-            vscode.window.showErrorMessage("The file could not be opened");
-          }
-        }
-      }
+    const artifact = this.artifact?.getArtifact();
+    if (artifact) {
+      await this.printerServiceHost.export(artifact);
     }
   }
 
