@@ -162,7 +162,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -177,7 +178,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -192,7 +194,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -277,7 +280,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -293,7 +297,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -309,7 +314,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );
@@ -325,7 +331,8 @@ export async function activate(context: vscode.ExtensionContext) {
         context.extensionPath,
         context.subscriptions,
         panelReloadEvent,
-        taxonomyServiceHost
+        taxonomyServiceHost,
+        printerServiceHost
       );
     }
   );

@@ -7,6 +7,7 @@ import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 import { artifactPanelBaseEvents } from "./panels/artifactPanelBaseEvents";
 import ArtifactUpdate from "./panels/artifactUpdate";
 import { PanelBase } from "./panelBase";
+import { PrinterServiceHost } from "./serviceHosts/printerServiceHost";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
@@ -87,7 +88,8 @@ export abstract class ArtifactPanelBase<
     extensionPath: string,
     disposables: vscode.Disposable[],
     panelReloadEvent: vscode.Event<void>,
-    private readonly taxonomyServiceHost: TaxonomyServiceHost
+    private readonly taxonomyServiceHost: TaxonomyServiceHost,
+    private readonly printerServiceHost: PrinterServiceHost
   ) {
     super(panelId, clientScript, extensionPath, disposables, panelReloadEvent);
     this.setTitle(this.title, iconSvg);
@@ -120,6 +122,8 @@ export abstract class ArtifactPanelBase<
       await this.rename();
     } else if (message.e === artifactPanelBaseEvents.Update) {
       await this.update(message.update);
+    } else if (message.e === artifactPanelBaseEvents.Export) {
+      await this.export();
     } else {
       await this.onUnhandledMessage(message);
     }
@@ -147,6 +151,13 @@ export abstract class ArtifactPanelBase<
     await this.taxonomyServiceHost.restart();
 
     await this.refreshArtifact(symbol.getId());
+  }
+
+  private async export() {
+    const id = this.artifact?.getArtifact()?.getArtifactSymbol()?.getId();
+    if (id) {
+      // TODO
+    }
   }
 
   private async refreshArtifact(artifactId: string) {

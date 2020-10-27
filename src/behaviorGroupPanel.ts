@@ -5,6 +5,7 @@ import * as vscode from "vscode";
 
 import { ArtifactPanelBase } from "./artifactPanelBase";
 import { behaviorGroupPanelEvents } from "./panels/behaviorGroupPanelEvents";
+import { PrinterServiceHost } from "./serviceHosts/printerServiceHost";
 import { TaxonomyServiceHost } from "./serviceHosts/taxonomyServiceHost";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
@@ -18,7 +19,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
     extensionPath: string,
     disposables: vscode.Disposable[],
     panelReloadEvent: vscode.Event<void>,
-    taxonomyServiceHost: TaxonomyServiceHost
+    taxonomyServiceHost: TaxonomyServiceHost,
+    printerServiceHost: PrinterServiceHost
   ) {
     const panel = new BehaviorGroupPanel(
       ttfConnection,
@@ -27,7 +29,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       extensionPath,
       disposables,
       panelReloadEvent,
-      taxonomyServiceHost
+      taxonomyServiceHost,
+      printerServiceHost
     );
     return await ArtifactPanelBase.createNew(
       ttfConnection,
@@ -48,7 +51,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
     extensionPath: string,
     disposables: vscode.Disposable[],
     panelReloadEvent: vscode.Event<void>,
-    taxonomyServiceHost: TaxonomyServiceHost
+    taxonomyServiceHost: TaxonomyServiceHost,
+    printerServiceHost: PrinterServiceHost
   ) {
     const panel = new BehaviorGroupPanel(
       ttfConnection,
@@ -57,7 +61,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       extensionPath,
       disposables,
       panelReloadEvent,
-      taxonomyServiceHost
+      taxonomyServiceHost,
+      printerServiceHost
     );
     await panel.openArtifact(artifactId);
     return panel;
@@ -70,7 +75,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
     extensionPath: string,
     disposables: vscode.Disposable[],
     panelReloadEvent: vscode.Event<void>,
-    taxonomyServiceHost: TaxonomyServiceHost
+    taxonomyServiceHost: TaxonomyServiceHost,
+    printerServiceHost: PrinterServiceHost
   ) {
     super(
       ttfConnection,
@@ -84,7 +90,8 @@ export class BehaviorGroupPanel extends ArtifactPanelBase<
       extensionPath,
       disposables,
       panelReloadEvent,
-      taxonomyServiceHost
+      taxonomyServiceHost,
+      printerServiceHost
     );
   }
 
