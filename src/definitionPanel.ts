@@ -91,7 +91,9 @@ export class DefinitionPanel extends PanelBase {
   }
 
   async onMessage(message: any) {
-    if (message.e === definitionPanelEvents.Init) {
+    if (message.e === definitionPanelEvents.Export) {
+      await this.printerServiceHost.export(this.definition?.getArtifact());
+    } else if (message.e === definitionPanelEvents.Init) {
       this.postMessage({
         definition: this.definition?.toObject(),
         taxonomy: this.taxonomyObjects,

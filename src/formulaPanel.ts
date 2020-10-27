@@ -93,6 +93,8 @@ export class FormulaPanel extends PanelBase {
       });
     } else if (message.e === formulaPanelEvents.Add) {
       await this.addArtifact(message.id);
+    } else if (message.e === formulaPanelEvents.Export) {
+      await this.printerServiceHost.export(this.formula?.getArtifact());
     } else if (message.e === formulaPanelEvents.Remove) {
       await this.removeArtifact(message.id);
     } else if (message.e === formulaPanelEvents.SetFormulaDescription) {

@@ -2,6 +2,7 @@
 
 const formulaPanelEvents = {
   Add: "add",
+  Export: "export",
   Init: "init",
   Remove: "remove",
   SetFormulaDescription: "setFormulaDescription",

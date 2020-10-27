@@ -53,7 +53,10 @@ export class PrinterServiceHost extends BaseServiceHost {
     );
   }
 
-  async export(artifact: ttfArtifact.Artifact) {
+  async export(artifact?: ttfArtifact.Artifact) {
+    if (!artifact) {
+      return;
+    }
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || !workspaceFolders.length) {
       vscode.window.showErrorMessage(
