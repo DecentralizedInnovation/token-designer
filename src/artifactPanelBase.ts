@@ -1,5 +1,3 @@
-import * as fs from "fs";
-import * as path from "path";
 import * as ttfArtifact from "./ttf/artifact_pb";
 import * as ttfClient from "./ttf/service_grpc_pb";
 import * as uuid from "uuid";

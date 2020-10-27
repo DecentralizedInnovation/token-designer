@@ -7,6 +7,7 @@ import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 import { definitionPanelEvents } from "./panels/definitionPanelEvents";
 import { FormulaPanel } from "./formulaPanel";
 import { PanelBase } from "./panelBase";
+import { PrinterServiceHost } from "./serviceHosts/printerServiceHost";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
@@ -22,7 +23,8 @@ export class DefinitionPanel extends PanelBase {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    printerServiceHost: PrinterServiceHost
   ) {
     let definitionName = await vscode.window.showInputBox({
       ignoreFocusOut: true,
@@ -36,7 +38,8 @@ export class DefinitionPanel extends PanelBase {
         ttfTaxonomy,
         extensionPath,
         disposables,
-        panelReloadEvent
+        panelReloadEvent,
+        printerServiceHost
       );
       panel.newDefinition(formulaId, definitionName);
       return panel;
@@ -50,7 +53,8 @@ export class DefinitionPanel extends PanelBase {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    printerServiceHost: PrinterServiceHost
   ) {
     const panel = new DefinitionPanel(
       ttfConnection,
@@ -58,7 +62,8 @@ export class DefinitionPanel extends PanelBase {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      printerServiceHost
     );
     await panel.openDefinition(artifactId);
     return panel;
@@ -70,7 +75,8 @@ export class DefinitionPanel extends PanelBase {
     private readonly ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     private readonly disposables: vscode.Disposable[],
-    private readonly panelReloadEvent: vscode.Event<void>
+    private readonly panelReloadEvent: vscode.Event<void>,
+    private readonly printerServiceHost: PrinterServiceHost
   ) {
     super(
       "definitionPanel",
@@ -102,7 +108,8 @@ export class DefinitionPanel extends PanelBase {
         this.ttfTaxonomy,
         this.extensionPath,
         this.disposables,
-        this.panelReloadEvent
+        this.panelReloadEvent,
+        this.printerServiceHost
       );
     }
   }

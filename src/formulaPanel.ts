@@ -7,6 +7,7 @@ import * as protobufAny from "google-protobuf/google/protobuf/any_pb";
 
 import { formulaPanelEvents } from "./panels/formulaPanelEvents";
 import { PanelBase } from "./panelBase";
+import { PrinterServiceHost } from "./serviceHosts/printerServiceHost";
 import { TaxonomyAsObjects } from "./panels/taxonomyAsObjects";
 import { TokenTaxonomy } from "./tokenTaxonomy";
 
@@ -23,7 +24,8 @@ export class FormulaPanel extends PanelBase {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    printerServiceHost: PrinterServiceHost
   ) {
     const panel = new FormulaPanel(
       ttfConnection,
@@ -31,7 +33,8 @@ export class FormulaPanel extends PanelBase {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      printerServiceHost
     );
     panel.newFormula();
     return panel;
@@ -44,7 +47,8 @@ export class FormulaPanel extends PanelBase {
     ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    printerServiceHost: PrinterServiceHost
   ) {
     const panel = new FormulaPanel(
       ttfConnection,
@@ -52,7 +56,8 @@ export class FormulaPanel extends PanelBase {
       ttfTaxonomy,
       extensionPath,
       disposables,
-      panelReloadEvent
+      panelReloadEvent,
+      printerServiceHost
     );
     await panel.openFormula(toolingSymbol);
     return panel;
@@ -64,7 +69,8 @@ export class FormulaPanel extends PanelBase {
     private readonly ttfTaxonomy: TokenTaxonomy,
     extensionPath: string,
     disposables: vscode.Disposable[],
-    panelReloadEvent: vscode.Event<void>
+    panelReloadEvent: vscode.Event<void>,
+    private readonly printerServiceHost: PrinterServiceHost
   ) {
     super(
       "formulaPanel",
