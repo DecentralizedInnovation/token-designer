@@ -33,7 +33,7 @@ export class PrinterServiceHost extends BaseServiceHost {
     return (await BaseServiceHost.initialize(host)) ? host : undefined;
   }
 
-  private constructor(private readonly context: vscode.ExtensionContext) {
+  private constructor(context: vscode.ExtensionContext) {
     super(
       path.join(
         context.extensionPath,

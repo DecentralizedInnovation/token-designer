@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import * as ttfArtifact from "./ttf/artifact_pb";
 import * as ttfClient from "./ttf/service_grpc_pb";
 import * as uuid from "uuid";
@@ -154,12 +156,30 @@ export abstract class ArtifactPanelBase<
   }
 
   private async export() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || !workspaceFolders.length) {
+      vscode.window.showErrorMessage(
+        "A folder must be open in the current VS Code workspace to export"
+      );
+      return;
+    }
+    const firstWorkspaceFolderPath = workspaceFolders[0].uri.fsPath;
+    let i = 0;
+    const name = this.artifact?.getArtifact()?.getName() || "Artifact";
+    let savePath = path.join(firstWorkspaceFolderPath, `${name}.docx`);
+    while (fs.existsSync(savePath)) {
+      i++;
+      savePath = path.join(firstWorkspaceFolderPath, `${name} (${i}).docx`);
+    }
+
     const id = this.artifact?.getArtifact()?.getArtifactSymbol()?.getId();
     const type = this.artifact?.getArtifact()?.getArtifactSymbol()?.getType();
     if (id && type !== undefined) {
       const openXmlDocument = await this.printerServiceHost.print(id, type);
-      console.log(openXmlDocument?.length);
-      // TODO: Save data to Word file in current workspace
+      if (openXmlDocument) {
+        fs.writeFileSync(savePath, Buffer.from(openXmlDocument, "base64"));
+        vscode.window.showInformationMessage(`Exported to ${savePath}`);
+      }
     }
   }
 
