@@ -35,7 +35,10 @@ export default function TokenBasePanel({ postMessage }: Props) {
   if (artifact && taxonomy) {
     return (
       <>
-        <ToolBoxTitle title={artifact.artifact?.name || ""} />
+        <ToolBoxTitle
+          title={artifact.artifact?.name || ""}
+          onExport={() => postMessage({ e: artifactPanelBaseEvents.Export })}
+        />
         <div style={{ margin: "var(--padding)", padding: "var(--padding)" }}>
           <ArtifactInspector
             taxonomy={taxonomy}

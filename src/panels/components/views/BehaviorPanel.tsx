@@ -39,6 +39,7 @@ export default function BehaviorPanel({ postMessage }: Props) {
           title={artifact.artifact?.name || ""}
           editMode={editMode}
           setEditMode={setEditMode}
+          onExport={() => postMessage({ e: artifactPanelBaseEvents.Export })}
           onRename={
             editMode
               ? () => postMessage({ e: artifactPanelBaseEvents.Rename })

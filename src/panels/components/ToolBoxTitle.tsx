@@ -5,6 +5,7 @@ import EditLink from "./links/EditLink";
 type Props = {
   title: string;
   editMode?: boolean;
+  onExport?: () => void;
   onRename?: () => void;
   setEditMode?: (editMode: boolean) => void;
 };
@@ -12,6 +13,7 @@ type Props = {
 export default function ToolBoxTitle({
   title,
   editMode,
+  onExport,
   onRename,
   setEditMode,
 }: Props) {
@@ -39,6 +41,26 @@ export default function ToolBoxTitle({
           onClick={() => setEditMode(!editMode)}
         >
           {editMode ? "Done editing" : "Make changes"}
+        </span>
+      )}
+      {!!onExport && !editMode && (
+        <span
+          style={{
+            float: "right",
+            marginRight: 5,
+          }}
+        >
+          <span
+            style={{
+              cursor: "pointer",
+              textDecoration: "underline",
+              marginRight: 5,
+            }}
+            onClick={onExport}
+          >
+            Export
+          </span>
+          {setEditMode ? " | " : ""}
         </span>
       )}
     </h1>
