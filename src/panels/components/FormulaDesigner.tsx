@@ -20,6 +20,7 @@ type Props = {
   taxonomy: TaxonomyAsObjects | null;
   formula: TemplateFormula.AsObject;
   incompatabilities: any;
+  onExport: () => void;
   addArtifact: (id: string) => void;
   removeArtifact: (id: string) => void;
   setFormulaDescription: (description: string) => void;
@@ -29,6 +30,7 @@ export default function FormulaDesigner({
   taxonomy,
   formula,
   incompatabilities,
+  onExport,
   addArtifact,
   removeArtifact,
   setFormulaDescription,
@@ -108,6 +110,7 @@ export default function FormulaDesigner({
         formulaDescription={
           formula.artifact?.artifactDefinition?.businessDescription
         }
+        onExport={onExport}
         setFormulaDescription={setFormulaDescription}
       >
         <Canvas

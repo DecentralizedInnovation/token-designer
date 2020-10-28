@@ -46,11 +46,16 @@ export default function DefinitionPanel({ postMessage }: Props) {
     postMessage({ e: definitionPanelEvents.LoadFormula, t: tooling });
   };
 
+  const onExport = () => {
+    postMessage({ e: definitionPanelEvents.Export });
+  };
+
   if (taxonomy && definition) {
     return (
       <DefinitionDesigner
         taxonomy={taxonomy}
         definition={definition}
+        onExport={onExport}
         setDefinitionName={setDefinitionName}
         setDefinitionProperty={setDefinitionProperty}
         loadFormula={loadFormula}

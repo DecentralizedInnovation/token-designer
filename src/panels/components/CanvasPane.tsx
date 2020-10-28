@@ -7,6 +7,7 @@ type Props = {
   formula?: string;
   formulaDescription?: string;
   definitionName?: string;
+  onExport: () => void;
   setFormulaDescription?: (description: string) => void;
   setDefinitionName?: (name: string) => void;
 };
@@ -18,6 +19,7 @@ export default function CanvasPane({
   children,
   formulaDescription,
   definitionName,
+  onExport,
   setFormulaDescription,
   setDefinitionName,
 }: Props) {
@@ -57,9 +59,21 @@ export default function CanvasPane({
     fontFamily: "sans-serif",
     fontSize: "2em",
   };
+  const exportLinkStyle: React.CSSProperties = {
+    position: "absolute",
+    top: "calc(1*var(--padding))",
+    right: "calc(3*var(--padding))",
+    cursor: "pointer",
+    color: "var(--vscode-sideBarTitle-foreground)",
+    textDecoration: "underline",
+    fontSize: "1.2em",
+  };
   return (
     <div style={style}>
       {children}
+      <h1 style={exportLinkStyle} onClick={onExport}>
+        Export
+      </h1>
       {definitionName && (
         <input
           type="text"

@@ -50,12 +50,17 @@ export default function FormulaPanel({ postMessage }: Props) {
     postMessage({ e: formulaPanelEvents.SetFormulaDescription, description });
   };
 
+  const onExport = () => {
+    postMessage({ e: formulaPanelEvents.Export });
+  };
+
   if (formula) {
     return (
       <FormulaDesigner
         taxonomy={taxonomy}
         formula={formula}
         incompatabilities={incompatabilities}
+        onExport={onExport}
         addArtifact={addArtifact}
         removeArtifact={removeArtifact}
         setFormulaDescription={setFormulaDescription}

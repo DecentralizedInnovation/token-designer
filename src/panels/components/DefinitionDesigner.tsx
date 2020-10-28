@@ -18,6 +18,7 @@ import ToolPane from "./ToolPane";
 type Props = {
   taxonomy: TaxonomyAsObjects;
   definition: TemplateDefinition.AsObject;
+  onExport: () => void;
   setDefinitionName: (name: string) => void;
   setDefinitionProperty: (path: string, name: string) => void;
   loadFormula?: (tooling: string) => void;
@@ -26,6 +27,7 @@ type Props = {
 export default function DefinitionDesigner({
   taxonomy,
   definition,
+  onExport,
   setDefinitionName,
   setDefinitionProperty,
   loadFormula,
@@ -72,6 +74,7 @@ export default function DefinitionDesigner({
         left="0"
         right={rightPaneWidth}
         definitionName={definition.artifact?.name}
+        onExport={onExport}
         setDefinitionName={setDefinitionName}
       >
         <Canvas
