@@ -1,5 +1,6 @@
 import * as childProcess from "child_process";
 import * as vscode from "vscode";
+import * as which from "which";
 
 export abstract class BaseServiceHost {
   private healthy = false;
@@ -7,7 +8,7 @@ export abstract class BaseServiceHost {
   private terminal: vscode.Terminal | null = null;
 
   protected static async initialize(host: BaseServiceHost): Promise<boolean> {
-    if (!BaseServiceHost.checkForDotNet()) {
+    if (!host.checkForDotNet()) {
       vscode.window.showErrorMessage(
         ".NET Core 3+ is required to get the most out of the Token Designer."
       );
@@ -37,11 +38,15 @@ export abstract class BaseServiceHost {
     }
   }
 
+  private readonly dotnetPath: string;
+
   protected constructor(
     private readonly binaryPath: string,
     private readonly terminalName: string,
     private readonly isHealthy: () => Promise<boolean>
-  ) {}
+  ) {
+    this.dotnetPath = which.sync("dotnet", { nothrow: true }) || "dotnet";
+  }
 
   async restart() {
     this.terminal?.dispose();
@@ -56,11 +61,11 @@ export abstract class BaseServiceHost {
     console.log(this.terminalName, "restart complete");
   }
 
-  private static checkForDotNet() {
+  private checkForDotNet() {
     try {
       return (
         parseInt(
-          childProcess.execFileSync("dotnet", ["--version"]).toString()
+          childProcess.execFileSync(this.dotnetPath, ["--version"]).toString()
         ) >= 3
       );
     } catch (e) {
@@ -76,7 +81,7 @@ export abstract class BaseServiceHost {
     const dotNetArguments = [this.binaryPath];
     this.terminal = vscode.window.createTerminal({
       name: this.terminalName,
-      shellPath: "dotnet",
+      shellPath: this.dotnetPath,
       shellArgs: dotNetArguments,
       hideFromUser: false,
     });
